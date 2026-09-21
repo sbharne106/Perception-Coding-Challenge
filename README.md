@@ -26,3 +26,9 @@ python trajectory.py --dataset dataset --output outputs
 Expected layout: `dataset/bbox_light.csv` (or `bboxes_light.csv`) and `dataset/xyz/*.npz`. Both documented CSV columns (`frame_id,x_min,y_min,x_max,y_max`) and the released dataset's columns (`frame,x1,y1,x2,y2`) are supported. Rows containing `0,0,0,0` are treated as missing detections and interpolated. The program also tolerates alternate filename prefixes and zero padding by matching the numeric frame suffix. `ffmpeg` must be installed for MP4 encoding (`brew install ffmpeg` on macOS).
 
 Outputs are `outputs/trajectory.png`, `outputs/trajectory.mp4`, and `outputs/trajectory.csv`. Tests run with `pytest -q`.
+
+## Part B
+
+`part_b.py` initializes an OpenCV CSRT tracker around the golf cart, tracks it through RGB at changing scale, samples robust XYZ depth at each tracked center, and transforms the cart into the same ground frame as the ego path. It also estimates red/green traffic-light state from the supplied light boxes. The tracker succeeded in all 299 frames; `tracking_quality.png` provides a nine-frame visual audit. The estimated cart path runs from `(-22.71, -3.79)` to `(-1.78, 1.56)` m.
+
+Run `python part_b.py --dataset dataset --output outputs`. It creates `bev_part_b.png`, `bev_part_b.mp4`, `bev_part_b.csv`, `tracking_quality.png`, and `golf_cart_bboxes.csv`. The CSV keeps the result auditable, and output images are written atomically so interrupted runs do not leave partial deliverables.
